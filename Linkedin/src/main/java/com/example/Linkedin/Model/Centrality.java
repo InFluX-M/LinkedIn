@@ -228,7 +228,7 @@ public class Centrality {
             }
             katz.add(results);
         }
-        return katz;   
+        return katz;
     }
 
 }
