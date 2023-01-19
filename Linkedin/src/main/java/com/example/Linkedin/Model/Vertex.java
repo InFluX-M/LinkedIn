@@ -7,7 +7,7 @@ public class Vertex {
     private User element;
     private final Map<Vertex, Edge> edges;
 
-    public Vertex(User element, boolean isDirected) {
+    public Vertex(User element) {
         this.element = element;
         edges = new HashMap<>();
     }

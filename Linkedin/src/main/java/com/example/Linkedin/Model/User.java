@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class User {
     private String id;
     private String name;
@@ -18,10 +17,6 @@ public class User {
     private String dateOfBirth;
     private List<String> specialities;
     private List<String> connectionId;
-
-    public User(String id) {
-        this.id = id;
-    }
 
     @Override
     public String toString()
