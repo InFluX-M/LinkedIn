@@ -2,24 +2,16 @@ package com.example.Linkedin.Model;
 
 import java.util.*;
 
-public class Graph<V, E> {
-
-    private final boolean isDirected;
+public class Graph {
     private final List<Vertex> vertices;
     private final List<Edge> edges;
 
-    public Graph(boolean isDirected) {
-        this.isDirected = isDirected;
+    public Graph() {
         this.vertices = new ArrayList<>();
         this.edges = new ArrayList<>();
     }
 
     // Methods ---------------------------------------------------------------------------------------------------------
-
-    public boolean isDirected() {
-        return isDirected;
-    }
-
     public int numVertices() {
         return vertices.size();
     }
@@ -64,7 +56,7 @@ public class Graph<V, E> {
     }
 
     public Vertex insertVertex(User element) {
-        Vertex v = new Vertex(element, isDirected);
+        Vertex v = new Vertex(element);
         vertices.add(v);
         return v;
     }
@@ -171,8 +163,4 @@ public class Graph<V, E> {
             }
         }
     }
-
-    // Vertex Class ---------------------------------------------------------------------------------------------------
-
-    // Edge Class ------------------------------------------------------------------------------------------------------
 }

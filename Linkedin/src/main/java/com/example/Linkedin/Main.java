@@ -23,7 +23,7 @@ public class Main {
 
         System.out.println("Hello World");
 
-        Graph<String, String> graph = new Graph<>(true);
+        Graph graph = new Graph();
         graph.insertVertex(new User("A"));
         graph.insertVertex(new User("B"));
         graph.insertVertex(new User("C"));
