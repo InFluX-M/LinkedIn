@@ -3,8 +3,10 @@ package com.example.Linkedin.Model;
 import java.util.*;
 
 public class Graph {
+
     private final List<Vertex> vertices;
     private final List<Edge> edges;
+    private HashMap<String, HashSet<Vertex>> components;
 
     public Graph() {
         this.vertices = new ArrayList<>();
@@ -12,6 +14,7 @@ public class Graph {
     }
 
     // Methods ---------------------------------------------------------------------------------------------------------
+
     public int numVertices() {
         return vertices.size();
     }
@@ -55,6 +58,18 @@ public class Graph {
         }
     }
 
+    public Boolean isAdjacent(Vertex u, Vertex v) {
+        return u.getEdges().containsKey(v);
+    }
+
+    public Boolean isConnected(Vertex u, Vertex v) {
+        HashSet<Vertex> visited = new HashSet<>();
+        HashSet<Vertex> componentSet = new HashSet<>();
+
+        DFS(visited, u, componentSet);
+        return componentSet.contains(v);
+    }
+
     public Vertex insertVertex(User element) {
         Vertex v = new Vertex(element);
         vertices.add(v);
@@ -69,8 +84,10 @@ public class Graph {
             v.getEdges().put(u, e);
             return e;
         } else {
-            throw new IllegalArgumentException("Edge from u to v exists");
+//            throw new IllegalArgumentException("Edge from u to v exists");
+            return getEdge(u, v);
         }
+
     }
 
     public Vertex getVertex(String id) {
@@ -105,12 +122,54 @@ public class Graph {
         edges.remove(e);
     }
 
+    public HashMap<String, HashSet<Vertex>> getComponents() {
+        return components;
+    }
+
+    //----------------------------------------------------------------------------------------
+
+    public void identifyComponentsDFS() {
+
+        components = new HashMap<>();
+
+        HashSet<Vertex> visited = new HashSet<>();
+        HashSet<Vertex> componentSet = new HashSet<>();
+
+        Iterator<Vertex> it = vertices.iterator();
+        Vertex current = it.next();
+
+        int i = 1;
+        while(visited.size() != numVertices())
+        {
+            DFS(visited, current, componentSet);
+            components.put("Component-" + i, componentSet);
+            i++;
+
+            componentSet = new HashSet<>();
+            while(it.hasNext() && visited.contains(current))
+            {
+                current = it.next();
+            }
+        }
+    }
+    public void DFS(HashSet<Vertex> visited, Vertex u, HashSet<Vertex> componentSet) {
+        visited.add(u);
+        componentSet.add(u);
+
+        for (Vertex v : u.getEdges().keySet()) {
+            if(!visited.contains(v))
+            {
+                componentSet.add(v);
+                DFS(visited, v, componentSet);
+            }
+        }
+    }
+
     public List<List<Vertex>> bfsLevels(Vertex s, int maxLevel) {
 
         Set<Vertex> visited = new HashSet<>();
         List<List<Vertex>> levels = new ArrayList<>();
         List<Vertex> currentLevel = new ArrayList<>();
-        Map<Vertex, Edge> forest = new HashMap<>(); // todo
         currentLevel.add(s);
         visited.add(s);
 
@@ -125,7 +184,6 @@ public class Graph {
                     if (!visited.contains(v)) {
                         visited.add(v);
                         nextLevel.add(v);
-                        forest.put(v, e); // todo use this to reconstruct the path
                     }
                 }
             }
@@ -145,7 +203,7 @@ public class Graph {
         return levels;
     }
 
-    public void BFS(Vertex s, Set<Vertex> known, Map<Vertex, Edge> forest) {
+    public void BFS(Vertex s, Set<Vertex> known) {
 
         Queue<Vertex> q = new LinkedList<>();
         known.add(s);
@@ -157,7 +215,6 @@ public class Graph {
                 Vertex v = this.opposite(u, e);
                 if (!known.contains(v)) {
                     known.add(v);
-                    forest.put(v, e);
                     q.add(v);
                 }
             }

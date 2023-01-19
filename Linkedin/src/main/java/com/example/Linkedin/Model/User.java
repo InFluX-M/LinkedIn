@@ -10,6 +10,7 @@ import java.util.Locale;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class User {
     private String id;
     private String username;
@@ -23,10 +24,6 @@ public class User {
     private List<String> specialities;
     private List<String> connectionId;
     private List<User> requests;
-
-    public User(String id) {
-        this.id = id;
-    }
 
     @Override
     public String toString() {

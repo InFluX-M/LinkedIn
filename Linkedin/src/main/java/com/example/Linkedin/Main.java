@@ -1,58 +1,95 @@
 package com.example.Linkedin;
 
-import com.example.Linkedin.Model.Graph;
-import com.example.Linkedin.Model.User;
+import com.example.Linkedin.File.UserUtil;
+import com.example.Linkedin.Model.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-//        try {
-//            String jsonArray = Files.readString(Path.of("src/main/resources/users.json"));
-//            System.out.println(jsonArray);
-//
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            List<UserUtil> list = objectMapper.readValue(jsonArray, new TypeReference<>() {
-//            });
-//
-//            for (UserUtil user : list) {
-//                System.out.println(user);
-//            }
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        ArrayList<UserUtil> list;
+        try {
+            String jsonArray = Files.readString(Path.of("/media/influx/Programming/Projects/project-final-random/Linkedin/src/main/resources/users.json"));
+            System.out.println(jsonArray);
 
-        System.out.println("Hello World");
+            ObjectMapper objectMapper = new ObjectMapper();
+            list = objectMapper.readValue(jsonArray, new TypeReference<>() {
+            });
+
+            for (UserUtil user : list) {
+                System.out.println(user);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
         Graph graph = new Graph();
-        graph.insertVertex(new User("A"));
-        graph.insertVertex(new User("B"));
-        graph.insertVertex(new User("C"));
-        graph.insertVertex(new User("D"));
-        graph.insertVertex(new User("E"));
-        graph.insertVertex(new User("F"));
-        graph.insertVertex(new User("G"));
-        graph.insertVertex(new User("H"));
-        graph.insertVertex(new User("I"));
-        graph.insertVertex(new User("J"));
 
-        graph.insertEdge(graph.getVertex("A"), graph.getVertex("B"), "AB");
-        graph.insertEdge(graph.getVertex("A"), graph.getVertex("C"), "AC");
-        graph.insertEdge(graph.getVertex("B"), graph.getVertex("D"), "BD");
-        graph.insertEdge(graph.getVertex("B"), graph.getVertex("E"), "BE");
-        graph.insertEdge(graph.getVertex("C"), graph.getVertex("E"), "CE");
-        graph.insertEdge(graph.getVertex("C"), graph.getVertex("F"), "CF");
-        graph.insertEdge(graph.getVertex("D"), graph.getVertex("G"), "DG");
-        graph.insertEdge(graph.getVertex("D"), graph.getVertex("E"), "DE");
-        graph.insertEdge(graph.getVertex("E"), graph.getVertex("G"), "EG");
-        graph.insertEdge(graph.getVertex("E"), graph.getVertex("F"), "EF");
-        graph.insertEdge(graph.getVertex("E"), graph.getVertex("H"), "EH");
-        graph.insertEdge(graph.getVertex("F"), graph.getVertex("I"), "FI");
-        graph.insertEdge(graph.getVertex("G"), graph.getVertex("J"), "GJ");
+        for(int i = 0; i < 2000; i++){
+            UserUtil us = list.get(i);
+            User user = new User(us.getId(), us.getName(), us.getEmail(), us.getField(), us.getWorkplace(), us.getUniversityLocation(), us.getDateOfBirth(), us.getSpecialties(), us.getConnectionId());
+            graph.insertVertex(user);
+        }
 
-        graph.printBeautified();
-        System.out.println("--------------");
-        graph.bfsLevels(graph.getVertex("A"), 8);
+        for(Vertex vertex : graph.vertices()) {
+            for(String connectionID : vertex.getElement().getConnectionId())
+            {
+                graph.insertEdge(vertex, graph.getVertex(connectionID), vertex.getElement().getId() + "-" + connectionID);
+            }
+        }
+
+//        graph.printBeautified();
+//        System.out.println("--------------");
+//        graph.bfsLevels(graph.getVertex("A"), 8);
+
+//        graph.identifyComponentsDFS();
+//        for (HashSet<Vertex> s : graph.getComponents().values()){
+//            for (Vertex v : s) {
+//                System.out.println(v.getElement());
+//            }
+//            System.out.println("--------------------------------");
+//        }
+//        System.out.println("sal");
+//        System.out.println(graph.bfsLevels(graph.getVertex("A"), 8));
+
+        Centrality c = new Centrality(graph);
+        for(ArrayList<Node> n :  c.degreeCentrality())
+        {
+            for(Node node : n){
+                System.out.println(node.vertex.getElement() + " " + node.value + " " + node.vertex.getEdges().size());
+            }
+            System.out.println("--------------------------------");
+        }
+        System.out.println("SAlaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
 
+        for(ArrayList<Node> n :  c.closenessCentrality())
+        {
+            for(Node node : n){
+                System.out.println(node.vertex.getElement() + " " + node.value + " " + node.vertex.getEdges().size());
+            }
+            System.out.println("--------------------------------");
+        }
+        System.out.println("SAlaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        for(ArrayList<Node> n :  c.betweennessCentrality())
+        {
+            for(Node node : n){
+                System.out.println(node.vertex.getElement() + " " + node.value + " " + node.vertex.getEdges().size());
+            }
+            System.out.println("--------------------------------");
+        }
+
+
+        System.out.println("HHIi");
     }
 }
