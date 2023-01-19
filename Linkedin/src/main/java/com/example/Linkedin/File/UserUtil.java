@@ -6,7 +6,7 @@ import java.util.List;
 
 @Data
 public class UserUtil {
-
+    // is used for reading data from json file
     private String id;
     private String name;
     private String dateOfBirth;
@@ -15,5 +15,4 @@ public class UserUtil {
     private String workplace;
     List<String> specialties;
     List<String> connectionId;
-
 }
