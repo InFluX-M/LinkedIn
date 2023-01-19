@@ -9,6 +9,8 @@ public class UserUtil {
     // is used for reading data from json file
     private String id;
     private String name;
+
+    private String email;
     private String dateOfBirth;
     private String universityLocation;
     private String field;

@@ -2,9 +2,9 @@ package com.example.Linkedin.Model;
 
 public class Node implements Comparable<Node> {
     public Vertex vertex;
-    public Integer value;
+    public double value;
 
-    public Node(Vertex vertex, Integer value) {
+    public Node(Vertex vertex, double value) {
         this.vertex = vertex;
         this.value = value;
     }

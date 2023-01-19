@@ -35,9 +35,9 @@ public class Main {
 
         Graph graph = new Graph();
 
-        for(int i = 0; i < 999; i++){
+        for(int i = 0; i < 2000; i++){
             UserUtil us = list.get(i);
-            User user = new User(us.getId(), us.getName(), "Random", us.getField(), us.getWorkplace(), us.getUniversityLocation(), us.getDateOfBirth(), us.getSpecialties(), us.getConnectionId());
+            User user = new User(us.getId(), us.getName(), us.getEmail(), us.getField(), us.getWorkplace(), us.getUniversityLocation(), us.getDateOfBirth(), us.getSpecialties(), us.getConnectionId());
             graph.insertVertex(user);
         }
 
@@ -66,9 +66,29 @@ public class Main {
         for(ArrayList<Node> n :  c.degreeCentrality())
         {
             for(Node node : n){
-                System.out.println(node.vertex.getElement() + " " + node.value);
+                System.out.println(node.vertex.getElement() + " " + node.value + " " + node.vertex.getEdges().size());
             }
             System.out.println("--------------------------------");
         }
+        System.out.println("SAlaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+        for(ArrayList<Node> n :  c.closenessCentrality())
+        {
+            for(Node node : n){
+                System.out.println(node.vertex.getElement() + " " + node.value + " " + node.vertex.getEdges().size());
+            }
+            System.out.println("--------------------------------");
+        }
+        System.out.println("SAlaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        for(ArrayList<Node> n :  c.betweennessCentrality())
+        {
+            for(Node node : n){
+                System.out.println(node.vertex.getElement() + " " + node.value + " " + node.vertex.getEdges().size());
+            }
+            System.out.println("--------------------------------");
+        }
+
+
+        System.out.println("HHIi");
     }
 }
