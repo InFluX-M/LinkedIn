@@ -1,12 +1,12 @@
 package com.example.Linkedin.Model;
 
 class Edge {
-    private String element;
     private final Vertex[] endpoints;
+    private final String element;
 
     public Edge(Vertex u, Vertex v, String element) {
         this.element = element;
-        endpoints = (Vertex[]) new Vertex[]{u, v};
+        endpoints = new Vertex[]{u, v};
     }
 
     public Vertex[] getEndpoints() {
@@ -25,9 +25,5 @@ class Edge {
 
     public String getElement() {
         return element;
-    }
-
-    public void setElement(String element) {
-        this.element = element;
     }
 }

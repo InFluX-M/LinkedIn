@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Vertex {
-    private User element;
+    private final User element;
     private final Map<Vertex, Edge> edges;
 
     public Vertex(User element) {
@@ -18,9 +18,5 @@ public class Vertex {
 
     public Map<Vertex, Edge> getEdges() {
         return edges;
-    }
-
-    public void setElement(User element) {
-        this.element = element;
     }
 }

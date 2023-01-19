@@ -72,6 +72,7 @@ public class Main {
         }
         System.out.println("SAlaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
+
         for(ArrayList<Node> n :  c.closenessCentrality())
         {
             for(Node node : n){
