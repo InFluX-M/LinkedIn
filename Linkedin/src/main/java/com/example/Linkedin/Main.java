@@ -88,7 +88,14 @@ public class Main {
             System.out.println("--------------------------------");
         }
 
-
+        System.out.println("SAlaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        for(ArrayList<Node> n :  c.katzCentrality(0.1))
+        {
+            for(Node node : n){
+                System.out.println(node.vertex.getElement() + " " + node.value + " " + node.vertex.getEdges().size());
+            }
+            System.out.println("--------------------------------");
+        }
         System.out.println("HHIi");
     }
 }
