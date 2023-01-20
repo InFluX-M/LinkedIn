@@ -11,14 +11,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table
+@Data
 public class User {
-    @Id
     private String id;
     private String username;
     private String name;
@@ -28,14 +25,9 @@ public class User {
     private String workplace;
     private String universityLocation;
     private LocalDate dateOfBirth;
-    private String specialities;
-    private String connectionsId;
-    @OneToOne
-    private RequestList requests;
-    @Transient
-    private List<String> specialitylist;
-    @Transient
-    private List<String> connectionIdList;
+    private List<User> requests;
+    private List<String> specialities;
+    private List<String> connectionId;
     @Override
     public String toString() {
         return this.id;
