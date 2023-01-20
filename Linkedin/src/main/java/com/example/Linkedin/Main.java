@@ -86,10 +86,27 @@
 //            for(Node node : n){
 //                System.out.println(node.vertex.getElement() + " " + node.value + " " + node.vertex.getEdges().size());
 //            }
-//            System.out.println("--------------------------------");
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
 //        }
 //
 //
 //        System.out.println("HHIi");
+////        Graph graph = new Graph();
+////
+////        for(int i = 0; i < 2000; i++){
+////            UserUtil us = list.get(i);
+////            User user = new User(us.getId(), us.getName(), us.getEmail(), us.getField(), us.getWorkplace(), us.getUniversityLocation(), us.getDateOfBirth(), us.getSpecialties(), us.getConnectionId());
+////            graph.insertVertex(user);
+////        }
+////
+////        for(Vertex vertex : graph.vertices()) {
+////            for(String connectionID : vertex.getElement().getConnectionId())
+////            {
+////                graph.insertEdge(vertex, graph.getVertex(connectionID), vertex.getElement().getId() + "-" + connectionID);
+////            }
+////        }
+//
 //    }
 //}

@@ -186,4 +186,49 @@ public class Centrality {
 
         return betweenness;
     }
+
+    public ArrayList<ArrayList<Node>> katzCentrality(double alpha) {
+
+        ArrayList<ArrayList<Node>> katz = new ArrayList<>();
+
+        for (HashSet<Vertex> component : graph.getComponents().values()) {
+            ArrayList<Node> centralityValue = new ArrayList<>();
+
+            for (Vertex source : component) {
+
+                HashMap<Vertex, Integer> level = new HashMap<>();
+                Queue<Vertex> queue = new LinkedList<>();
+                level.put(source, 0);
+
+                // stores the Katz centrality value of the source node
+                double centrality = 0;
+                Vertex current = source;
+
+                while (level.size() != component.size()) {
+                    for (Vertex node : current.getEdges().keySet()) {
+                        if (!level.containsKey(node)) {
+                            int newLevel = level.get(current) + 1;
+                            centrality += Math.pow(alpha, newLevel);
+                            level.put(node, newLevel);
+                            queue.add(node);
+                        }
+                    }
+                    if (!queue.isEmpty()) {
+                        current = queue.poll();
+                    }
+                }
+                centralityValue.add(new Node(source, centrality));
+            }
+            // sorts the nodes according to its closeness centrality
+            ArrayList<Node> results = new ArrayList<>();
+            Collections.sort(centralityValue, Collections.reverseOrder());
+            Iterator<Node> it = centralityValue.iterator();
+            while (it.hasNext() && results.size() < 5) {
+                results.add(it.next());
+            }
+            katz.add(results);
+        }
+        return katz;
+    }
+
 }
