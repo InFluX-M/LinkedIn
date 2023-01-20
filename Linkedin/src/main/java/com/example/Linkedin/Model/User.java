@@ -1,5 +1,6 @@
 package com.example.Linkedin.Model;
 
+import com.example.Linkedin.Model.response.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +11,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table
-@Data
 public class User {
     @Id
     @GeneratedValue
@@ -34,11 +35,8 @@ public class User {
     private Set<User> connections;
     @ManyToMany
     private Set<User> requests;
-    private List<User> requests;
-    private List<String> specialities;
-    private List<String> connectionId;
-    @Override
-    public String toString() {
-        return this.id;
+
+    public UserResponse toUserResponse() {
+        return new UserResponse(username, email, password);
     }
 }
