@@ -26,81 +26,81 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public ResponseEntity<UserResponse> getUserByEmail(String email) {
-        return ResponseEntity.ok(userRepository.findByEmail(email).toUserResponse());
+    public UserResponse getUserByEmail(String email) {
+        return userRepository.findByEmail(email).toUserResponse();
     }
 
-    public ResponseEntity<UserResponse> addSpeciality(String username, String speciality) {
-        User user = userRepository.findByUsername(username);
+    public UserResponse addSpeciality(String username, String speciality) {
+        User user = checkUserId(username);
         user.getSpecialities().add(speciality);
         userRepository.save(user);
-        return ResponseEntity.ok(user.toUserResponse());
+        return user.toUserResponse();
     }
 
-    public ResponseEntity<UserResponse> removeSpeciality(String username, String speciality) {
-        User user = userRepository.findByUsername(username);
+    public UserResponse removeSpeciality(String username, String speciality) {
+        User user = checkUserId(username);
         user.getSpecialities().remove(speciality);
         userRepository.save(user);
-        return ResponseEntity.ok(user.toUserResponse());
+        return user.toUserResponse();
     }
 
-    public ResponseEntity<UserResponse> signUp(UserSignup userSignup) {
+    public UserResponse signUp(UserSignup userSignup) {
         User user = User.builder()
                 .username(userSignup.getUsername())
                 .email(userSignup.getEmail())
                 .password(userSignup.getPassword())
                 .build();
-        return ResponseEntity.ok(userRepository.save(user).toUserResponse());
+        return userRepository.save(user).toUserResponse();
     }
 
-    public ResponseEntity<UserResponse> updateUser(User user) {
-        return ResponseEntity.ok(userRepository.save(user).toUserResponse());
+    public UserResponse updateUser(User user) {
+        return userRepository.save(user).toUserResponse();
     }
 
-    public ResponseEntity<UserResponse> deleteUser(User user) {
+    public UserResponse deleteUser(User user) {
         userRepository.delete(user);
-        return ResponseEntity.ok().build();
+        return user.toUserResponse();
     }
 
-    public ResponseEntity<Void> addConnection(String user, String connection) {
-        User user1 = userRepository.findByUsername(user);
-        User user2 = userRepository.findByUsername(connection);
+    public Void addConnection(String user, String connection) {
+        User user1 = checkUserId(user);
+        User user2 = checkUserId(connection);
         user1.getConnections().add(user2);
         user2.getConnections().add(user1);
         userRepository.save(user1);
         userRepository.save(user2);
-        return ResponseEntity.ok().build();
+        return null;
     }
 
-    public ResponseEntity<Void> removeConnection(String user, String connection) {
-        User user1 = userRepository.findByUsername(user);
-        User user2 = userRepository.findByUsername(connection);
+    public Void removeConnection(String user, String connection) {
+        User user1 = checkUserId(user);
+        User user2 = checkUserId(connection);
         user1.getConnections().remove(user2);
         user2.getConnections().remove(user1);
         userRepository.save(user1);
         userRepository.save(user2);
-        return ResponseEntity.ok().build();
+        return null;
     }
 
-    public ResponseEntity<Void> addRequest(String user, String request) {
-        User user1 = userRepository.findByUsername(user);
-        User user2 = userRepository.findByUsername(request);
+    public Void addRequest(String user, String request) {
+        User user1 = checkUserId(user);
+        User user2 = checkUserId(request);
         user2.getRequests().add(user1);
         userRepository.save(user2);
-        return ResponseEntity.ok().build();
+        return null;
     }
 
     public ResponseEntity<UserResponse> removeRequest(String user, String request) {
-        User user1 = userRepository.findByUsername(user);
-        User user2 = userRepository.findByUsername(request);
+        User user1 = checkUserId(user);
+        User user2 = checkUserId(request);
         user2.getRequests().remove(user1);
         userRepository.save(user2);
         return ResponseEntity.ok(userRepository.save(user1).toUserResponse());
     }
 
     public boolean sentRequest(String user, String request) {
-        User user1 = userRepository.findByUsername(user);
-        User user2 = userRepository.findByUsername(request);
+        User user1 = checkUserId(user);
+        User user2 = checkUserId(request);
         return user2.getRequests().contains(user1);
     }
 
