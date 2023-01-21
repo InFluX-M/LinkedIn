@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/css/all-style.css">
+</head>
+<body>
+<h2>All Users in RandIn</h2>
+<div class="container">
+    <div class="box" th:each="user: ${list}">
+
+        <img class="avatar" th:src="${user.getProfile_url()}"/>
+
+        <div class="name" th:text="${user.name}"></div>
+
+        <a target="_blank" href="#">
+            <span class="screenReader">View RandIn Profile</span>
+        </a>
+
+    </div>
+</div>
+</body>
+</html>
