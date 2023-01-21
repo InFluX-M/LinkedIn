@@ -1,5 +1,6 @@
 package com.example.Linkedin.Model;
 
+import com.example.Linkedin.Model.response.ProfileResponse;
 import com.example.Linkedin.Model.response.UserResponse;
 import lombok.*;
 
@@ -27,6 +28,7 @@ public class User {
     private String workplace;
     private String universityLocation;
     private LocalDate dateOfBirth;
+    private String profile_url;
     @ElementCollection
     private List<String> specialities;
     @ManyToMany
@@ -38,5 +40,9 @@ public class User {
 
     public UserResponse toUserResponse() {
         return new UserResponse(username, email, password);
+    }
+
+    public ProfileResponse toProfileResponse() {
+        return new ProfileResponse(name, username, email, field, workplace, universityLocation, dateOfBirth, profile_url, specialities);
     }
 }

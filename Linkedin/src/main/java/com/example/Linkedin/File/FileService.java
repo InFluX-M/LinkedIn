@@ -39,6 +39,7 @@ public class FileService {
                         .dateOfBirth(LocalDate.now())
                         .field(userUtil.getField())
                         .workplace(userUtil.getWorkplace())
+                        .profile_url(userUtil.getProfile_pic())
                         .universityLocation(userUtil.getUniversityLocation())
                         .specialities(userUtil.getSpecialties())
                         .build();
