@@ -1,8 +1,8 @@
 from django.http.response import JsonResponse
 
 from rest_framework.decorators import api_view
-import movies.anomaly_detection as ad
-import movies.clustering_recommender as cr
+import users.anomaly_detection as ad
+import users.clustering_recommender as cr
 
 
 @api_view(['GET'])

@@ -4,5 +4,5 @@ from django.urls import include, path
 
 # urls
 urlpatterns = [
-    path('api/', include('movies.urls')),
+    path('api/', include('users.urls')),
 ]
