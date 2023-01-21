@@ -19,8 +19,7 @@ import java.util.Set;
 @Table
 public class User {
     @Id
-    @GeneratedValue
-    private Integer id;
+    private String id;
     private String name;
     private String username;
     private String email;
