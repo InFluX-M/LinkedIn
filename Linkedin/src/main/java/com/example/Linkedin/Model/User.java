@@ -1,17 +1,16 @@
 package com.example.Linkedin.Model;
 
 import com.example.Linkedin.Model.response.UserResponse;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,8 +30,10 @@ public class User {
     @ElementCollection
     private List<String> specialities;
     @ManyToMany
+    @ToString.Exclude
     private Set<User> connections;
     @ManyToMany
+    @ToString.Exclude
     private Set<User> requests;
 
     public UserResponse toUserResponse() {
