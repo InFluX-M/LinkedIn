@@ -19,11 +19,10 @@
 
 <div id="slideBox">
     <div class="topLayer">
-
         <div class="left">
             <div class="content">
                 <h2>Sign Up</h2>
-                <form id="form-signup" method="post" onsubmit="return false;">
+                <form id="form-signup" method="post">
                     <div class="form-element form-stack">
                         <label for="email" class="form-label">Email</label>
                         <input id="email" type="email" name="email">
@@ -43,12 +42,14 @@
                     </div>
                     <div class="form-element form-submit">
                         <button id="signUp" class="signup" type="submit" name="signup">Sign up</button>
-                        <button id="goLeft" class="signup off">Log In</button>
                     </div>
                 </form>
+                <div class="form-element form-submit">
+                    <p style="color: #e3e3e3">Already have an account?</p>
+                    <button id="goLeft" class="signup off" style="border: 1px solid #8561C5;">Log In</button>
+                </div>
             </div>
         </div>
-
         <div class="right">
             <div class="content">
                 <h2>Login</h2>
@@ -63,13 +64,17 @@
                         <input id="password-login" type="password" name="password">
                     </div>
 
-                    <p th:if="${error}" style="color: #842029">Oops! username or password is incorrect</p>
+                    <p th:if="${error}" style="color: #83111b">Oops! username or password is incorrect</p>
 
                     <div class="form-element form-submit">
                         <button id="logIn" class="login" type="submit" name="login">Log In</button>
-                        <button id="goRight" class="login off" name="signup">Sign Up</button>
                     </div>
                 </form>
+                <div class="form-element form-submit">
+                    <p>Don't have an account?</p>
+                    <button id="goRight" class="login off" name="signup" style="border: 1px solid #8561C5;">Sign Up
+                    </button>
+                </div>
             </div>
         </div>
     </div>
