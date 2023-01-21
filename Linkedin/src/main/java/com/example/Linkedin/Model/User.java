@@ -1,6 +1,6 @@
 package com.example.Linkedin.Model;
 
-import com.example.Linkedin.Model.response.ProfileResponse;
+//import com.example.Linkedin.Model.response.ProfileResponse;
 import com.example.Linkedin.Model.response.UserResponse;
 import lombok.*;
 
@@ -42,7 +42,8 @@ public class User {
         return new UserResponse(username, email, password);
     }
 
-    public ProfileResponse toProfileResponse() {
-        return new ProfileResponse(name, username, email, field, workplace, universityLocation, dateOfBirth, profile_url, specialities);
-    }
+//    public ProfileResponse toProfileResponse() {
+//        return new ProfileResponse(name, username, email, field, workplace, universityLocation, dateOfBirth, profile_url, specialities);
+//    }
+
 }

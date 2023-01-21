@@ -93,38 +93,6 @@ def clustering_specialties_view(request):
 
 
 @api_view(['GET'])
-def clustering_specialties_view(request):
-    if request.method == 'GET':
-        X, df = cr.preprocessing()
-        data = cr.clustering_specialties(X, df)
-
-        ls = list()
-        for key in data:
-            cluster = list()
-            for idx in data[key]:
-                cluster.append(idx)
-            ls.append(cluster)
-
-        return JsonResponse(ls, safe=False)
-
-
-@api_view(['GET'])
-def clustering_field_view(request):
-    if request.method == 'GET':
-        X, df = cr.preprocessing()
-        data = cr.clustering_field(X, df)
-
-        ls = list()
-        for key in data:
-            cluster = list()
-            for idx in data[key]:
-                cluster.append(idx)
-            ls.append(cluster)
-
-        return JsonResponse(ls, safe=False)
-
-
-@api_view(['GET'])
 def clustering_field_view(request):
     if request.method == 'GET':
         X, df = cr.preprocessing()
