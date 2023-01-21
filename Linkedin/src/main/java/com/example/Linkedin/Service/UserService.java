@@ -8,14 +8,22 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
 
-    public ResponseEntity<UserResponse> getUser(String username) {
-        return ResponseEntity.ok(userRepository.findByUsername(username).toUserResponse());
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User getUser(String username) {
+        return userRepository.findByUsername(username);
     }
 
     public ResponseEntity<UserResponse> getUserByEmail(String email) {
@@ -94,5 +102,12 @@ public class UserService {
         User user1 = userRepository.findByUsername(user);
         User user2 = userRepository.findByUsername(request);
         return user2.getRequests().contains(user1);
+    }
+
+    public User checkUserId(String Id) {
+        Optional<User> loaded = userRepository.findById(Id);
+        if (loaded.isEmpty())
+            throw new EntityNotFoundException("User not found");
+        return loaded.get();
     }
 }
