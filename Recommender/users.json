@@ -71714,7 +71714,16 @@
             "Database",
             "Data",
             "Fast Type",
-            "Java"
+            "Java",
+            "AI", 
+            "Algorithm",
+            "Django",
+            "Blockchain",
+            "Game",
+            "Back-End",
+            "Hardware",
+            "IT",
+            "Software"
         ],
         "dateOfBirth": "19831/6/16",
         "connectionId": [
@@ -71726,5 +71735,46 @@
         "email": "azai@miller.com",
         "profile_pic": "https://randomuser.me/api/portraits/women/66.jpg",
         "field": "DD"
+    },
+    {
+        "id": "2003",
+        "name": "Matin Azami",
+        "workplace": "Cisco",
+        "universityLocation": "Stanford",
+        "specialties": [
+            "Photoshop",
+            "Machine Learning",
+            "C++",
+            "Verilog",
+            "Crypto",
+            "C#",
+            "Front-End",
+            "Full-Stack",
+            "PHP",
+            "Python",
+            "Database",
+            "Data",
+            "Fast Type",
+            "Java",
+            "AI", 
+            "Algorithm",
+            "Django",
+            "Blockchain",
+            "Game",
+            "Back-End",
+            "Hardware",
+            "IT",
+            "Software"
+        ],
+        "dateOfBirth": "19831/6/16",
+        "connectionId": [
+            "1917",
+            "367",
+            "1",
+            "622"
+        ],
+        "email": "azai@miller.com",
+        "profile_pic": "https://randomuser.me/api/portraits/women/66.jpg",
+        "field": "CC"
     }
-]
+] 
