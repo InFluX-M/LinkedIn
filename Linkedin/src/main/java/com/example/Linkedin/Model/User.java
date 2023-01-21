@@ -15,8 +15,6 @@ import java.util.Locale;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table
 public class User {
     @Id
     private String id;
@@ -28,14 +26,9 @@ public class User {
     private String workplace;
     private String universityLocation;
     private LocalDate dateOfBirth;
-    private String specialities;
-    private String connectionsId;
-    @OneToOne
-    private RequestList requests;
-    @Transient
-    private List<String> specialitylist;
-    @Transient
-    private List<String> connectionIdList;
+    private List<String> specialities;
+    private List<String> connectionId;
+    private List<User> requests;
     @Override
     public String toString() {
         return this.id;
