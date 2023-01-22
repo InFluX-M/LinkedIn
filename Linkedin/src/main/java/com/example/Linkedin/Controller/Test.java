@@ -27,10 +27,10 @@ public class Test {
         return "user-profile";
     }
 
-    @GetMapping("/users/connections")
-    public String connectionsPage() {
-        return "connections";
-    }
+//    @GetMapping("/users/connections")
+//    public String connectionsPage() {
+//        return "connections";
+//    }
 
     @GetMapping("/ps")
     public String test(Model model) {
