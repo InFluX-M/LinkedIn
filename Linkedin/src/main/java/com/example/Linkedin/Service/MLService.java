@@ -21,11 +21,11 @@ public class MLService {
 
     private final UserService userService;
 
-    public List<UserResponse> getAnomalyDetection() throws Exception {
+    public List<User> getAnomalyDetection() throws Exception {
         ArrayList<String> users = getDataAnomalyDetection();
-        List<UserResponse> usersList = new ArrayList<>();
+        List<User> usersList = new ArrayList<>();
         for (String id : users) {
-            usersList.add(userService.checkUserId(id).toUserResponse());
+            usersList.add(userService.checkUserId(id));
         }
         return usersList;
     }
@@ -102,6 +102,17 @@ public class MLService {
         }
 
         return clusters;
+    }
+
+    public List<User> getRecommendations(String id, String type) throws Exception {
+        List<List<User>> users = getClusters(type);
+        User user = userService.checkUserId(id);
+        for (List<User> cluster : users) {
+            if (cluster.contains(user)) {
+               return cluster;
+            }
+        }
+        return null;
     }
 
 }
