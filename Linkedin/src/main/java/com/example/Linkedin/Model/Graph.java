@@ -196,17 +196,12 @@ public class Graph {
             }
         }
 
-        // todo delete this
-        System.out.println("BFS levels: ");
-        for (List<Vertex> level : levels) {
-            System.out.println(level.stream().map(Vertex::getElement).toList());
-        }
-
         return levels;
     }
 
-    public void BFS(Vertex s, Set<Vertex> known) {
+    public Set<Vertex> BFS(Vertex s) {
 
+        Set<Vertex> known = new HashSet<>();
         Queue<Vertex> q = new LinkedList<>();
         known.add(s);
         q.add(s);
@@ -221,5 +216,7 @@ public class Graph {
                 }
             }
         }
+
+        return known;
     }
 }

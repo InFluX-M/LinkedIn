@@ -7,9 +7,7 @@ import com.example.Linkedin.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +17,7 @@ public class SuggestionService {
     private final UserRepository userRepository;
     private Graph graph;
     private Centrality centrality;
+
     public void createGraph() {
         graph = fileService.createGraph();
         centrality = new Centrality(graph);
@@ -60,27 +59,8 @@ public class SuggestionService {
         return 0;
     }
 
-    public HashSet<Vertex> getComponentUser(String id) {
-        HashMap<String, HashSet<Vertex>> components = graph.getComponents();
-        for (String key : components.keySet()) {
-            for (Vertex vertex : components.get(key)) {
-                if (vertex.getElement().getId().equals(id)) {
-                    return components.get(key);
-                }
-            }
-        }
-        return null;
-    }
-
-    public double getComponentScore(String idUser, String idConnection) {
-        HashMap<String, HashSet<Vertex>> components = graph.getComponents();
-        HashSet<Vertex> componentId = getComponentUser(idUser);
-        return (componentId.contains(graph.getVertex(idConnection))) ? 50.0 : 0;
-    }
-
-    public double getScoreConnection(String idUser, String idConnection) {
-        User user = userService.checkUserId(idUser);
-        User connection = userService.checkUserId(idUser);
+    public double getScoreConnection(User user, Set<Vertex> component, String idConnection) {
+        User connection = userService.checkUserId(idConnection);
         UserUtil userUtil = new UserUtil(user.getId(), user.getName(), user.getProfile_url(), user.getEmail(), user.getDateOfBirth().toString(),
                 user.getUniversityLocation(), user.getField(), user.getWorkplace(), user.getSpecialities());
 
@@ -91,7 +71,7 @@ public class SuggestionService {
         score += (getKatzCentralityScore(idConnection)/1.5);
         score += (getBetweennessCentralityScore(idConnection)/60);
         score += (getClosenessCentralityScore(idConnection)*500);
-        score += getComponentScore(idUser, idConnection);
+        score += (component.contains(graph.getVertex(idConnection)) ? 50.0 : 0);
         score += (userUtil.getUniversityLocation().equals(connectionUtil.getUniversityLocation())) ? 200.0 : 0.0;
         score += (userUtil.getField().equals(connectionUtil.getField())) ? 100 : 0.0;
         score += (userUtil.getWorkplace().equals(connectionUtil.getWorkplace())) ? 200.0 : 0;
@@ -106,5 +86,31 @@ public class SuggestionService {
         return score;
     }
 
+    public List<User> getSuggestions(String idUser) {
+        User user = userService.checkUserId(idUser);
+        Set<Vertex> component = graph.BFS(graph.getVertex(idUser));
+        List<User> suggestion = new ArrayList<>();
+        ArrayList<Map.Entry<User, Double>> scoresList = new ArrayList<>();
 
+        List<User> allUsers = userRepository.findAll();
+        for (User suggest : allUsers) {
+            if (!suggest.getId().equals(idUser) && !user.getConnections().contains(suggest)) {
+                double score = getScoreConnection(user, component, suggest.getId());
+                scoresList.add(new AbstractMap.SimpleEntry<>(suggest, score));
+            }
+        }
+
+        Collections.sort(scoresList, new Comparator<Map.Entry<User, Double>>() {
+            @Override
+            public int compare(Map.Entry<User, Double> o1, Map.Entry<User, Double> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+
+        for (int i = 0; i < 10; i++) {
+            suggestion.add(scoresList.get(i).getKey());
+        }
+
+        return suggestion;
+    }
 }

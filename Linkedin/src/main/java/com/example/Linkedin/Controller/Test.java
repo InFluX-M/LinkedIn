@@ -1,12 +1,18 @@
 package com.example.Linkedin.Controller;
 
+import com.example.Linkedin.Model.User;
 import com.example.Linkedin.Model.request.UserLogin;
+import com.example.Linkedin.Model.response.UserResponse;
+import com.example.Linkedin.Service.SuggestionService;
 import com.example.Linkedin.Service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -71,4 +77,17 @@ public class Test {
         System.out.println("test");
         return "profile-card";
     }
+
+    SuggestionService suggestionService;
+    @GetMapping("/c")
+    public ResponseEntity<Void> readUsers() {
+        suggestionService.createGraph();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/c2/{id}")
+    public ResponseEntity<List<UserResponse>> readUsers(@PathVariable String id) {
+        return new ResponseEntity<>(suggestionService.getSuggestions(id).stream().map(User::toUserResponse).toList(), HttpStatus.OK);
+    }
+
 }
