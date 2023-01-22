@@ -61,7 +61,7 @@ public class SuggestionService {
         return 0;
     }
 
-    public double getScoreConnection(Set<String> impact, User user, Set<Vertex> component, String idConnection, Graph graph, ArrayList<ArrayList<Node>> katz, ArrayList<ArrayList<Node>> betweenness, ArrayList<ArrayList<Node>> closeness) {
+    public double getScoreConnection(List<List<Vertex>> levels, Set<String> impact, User user, Set<Vertex> component, String idConnection, Graph graph, ArrayList<ArrayList<Node>> katz, ArrayList<ArrayList<Node>> betweenness, ArrayList<ArrayList<Node>> closeness) {
         User connection = userService.checkUserId(idConnection);
 
         UserUtil userUtil = UserUtil.builder()
@@ -89,6 +89,7 @@ public class SuggestionService {
 
         double score = 0;
 
+
         if(impact.contains("Centrality"))
         {
             score += getKatzCentralityScore(idConnection, katz)/1.2;
@@ -102,11 +103,26 @@ public class SuggestionService {
             score += (getClosenessCentralityScore(idConnection, closeness)*500);
         }
 
-        if(impact.contains("Component"))
-            score += (component.contains(graph.getVertex(idConnection)) ? 100.0 : 0);
-        else
-            score += (component.contains(graph.getVertex(idConnection)) ? 30.0 : 0);
+        int lvlConnection = 10;
+        int lvl = 0;
+        for(List<Vertex> level : levels) {
+            if(level.contains(graph.getVertex(idConnection))) {
+                lvlConnection = lvl;
+            }
+            lvl++;
+        }
 
+        if(impact.contains("Component"))
+        {
+            score += (component.contains(graph.getVertex(idConnection)) ? 100.0 : 0);
+            score += (10 - lvlConnection)*50;
+        }
+        else
+        {
+            score += (component.contains(graph.getVertex(idConnection)) ? 30.0 : 0);
+            score += (10 - lvlConnection)*15;
+
+        }
 
         if(impact.contains("Field"))
             score += (userUtil.getField().equals(connectionUtil.getField()) ? 150.0 : 0);
@@ -119,12 +135,10 @@ public class SuggestionService {
         else
             score += (userUtil.getWorkplace().equals(connectionUtil.getWorkplace()) ? 150.0 : 0);
 
-
         if(impact.contains("University"))
             score += (userUtil.getUniversityLocation().equals(connectionUtil.getUniversityLocation()) ? 250.0 : 0);
         else
             score += (userUtil.getUniversityLocation().equals(connectionUtil.getUniversityLocation()) ? 150.0 : 0);
-
 
         int commonSpecialities = 0;
         for (String speciality : userUtil.getSpecialties()) {
@@ -132,7 +146,14 @@ public class SuggestionService {
                 commonSpecialities++;
             }
         }
-        score += (commonSpecialities*50);
+
+        if(impact.contains("Specialties")) {
+            score += (commonSpecialities*100);
+        }
+        else {
+            score += (commonSpecialities*50);
+        }
+
         return score;
     }
 
@@ -149,11 +170,12 @@ public class SuggestionService {
         ArrayList<ArrayList<Node>> closeness = centrality.closenessCentrality();
 
         Set<String> impactSet = new HashSet<>(Arrays.asList(impact.split(",")));
+        List<List<Vertex>> levels = graph.bfsLevels(graph.getVertex(idUser), 10);
 
         List<User> allUsers = userRepository.findAll();
         for (User suggest : allUsers) {
             if (!suggest.getId().equals(idUser) && !user.getConnections().contains(suggest)) {
-                double score = getScoreConnection(impactSet, user, component, suggest.getId(), graph, katz, betweenness, closeness);
+                double score = getScoreConnection(levels, impactSet, user, component, suggest.getId(), graph, katz, betweenness, closeness);
                 scoresList.add(new AbstractMap.SimpleEntry<>(suggest, score));
             }
         }
@@ -171,6 +193,13 @@ public class SuggestionService {
             System.out.println(getClosenessCentralityScore(scoresList.get(i).getKey().getId(), closeness));
             System.out.println(getBetweennessCentralityScore(scoresList.get(i).getKey().getId(), betweenness));
             System.out.println(getKatzCentralityScore(scoresList.get(i).getKey().getId(), katz));
+            int lvl = 0;
+            for(List<Vertex> level : levels) {
+                if(level.contains(graph.getVertex(scoresList.get(i).getKey().getId()))) {
+                    System.out.println("Level: " + lvl);
+                }
+                lvl++;
+            }
         }
 
         return suggestion;
