@@ -207,7 +207,7 @@ public class SuggestionService {
 
         return suggestion;
     }
-    
+
     public List<User> getInfluenceUsers() {
         Graph graph = createGraph();
         Centrality centrality = new Centrality(graph);
