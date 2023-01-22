@@ -207,4 +207,37 @@ public class SuggestionService {
 
         return suggestion;
     }
+    
+    public List<User> getInfluenceUsers() {
+        Graph graph = createGraph();
+        Centrality centrality = new Centrality(graph);
+        ArrayList<ArrayList<Node>> katz = centrality.katzCentrality(0.5);
+        ArrayList<ArrayList<Node>> betweenness = centrality.betweennessCentrality();
+        ArrayList<ArrayList<Node>> closeness = centrality.closenessCentrality();
+
+        List<User> allUsers = userRepository.findAll();
+        ArrayList<Map.Entry<User, Double>> scoresList = new ArrayList<>();
+
+        for (User influence : allUsers) {
+            double score = 0.0;
+            score += (getKatzCentralityScore(influence.getId(), katz)/1.5);
+            score += (getBetweennessCentralityScore(influence.getId(), betweenness)/500);
+            score += (getClosenessCentralityScore(influence.getId(), closeness)*500);
+            scoresList.add(new AbstractMap.SimpleEntry<>(influence, score));
+        }
+
+        scoresList.sort(new Comparator<Map.Entry<User, Double>>() {
+            @Override
+            public int compare(Map.Entry<User, Double> o1, Map.Entry<User, Double> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+
+        List<User> influenceUsers = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            influenceUsers.add(scoresList.get(i).getKey());
+        }
+
+        return influenceUsers;
+    }
 }
