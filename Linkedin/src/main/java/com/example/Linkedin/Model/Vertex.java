@@ -1,18 +1,20 @@
 package com.example.Linkedin.Model;
 
+import com.example.Linkedin.File.UserUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Vertex {
-    private final User element;
+    private final UserUtil element;
     private final Map<Vertex, Edge> edges;
 
-    public Vertex(User element) {
+    public Vertex(UserUtil element) {
         this.element = element;
         edges = new HashMap<>();
     }
 
-    public User getElement() {
+    public UserUtil getElement() {
         return element;
     }
 

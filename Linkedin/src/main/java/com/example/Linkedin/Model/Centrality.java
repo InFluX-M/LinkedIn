@@ -4,8 +4,7 @@ import java.util.*;
 
 
 public class Centrality {
-
-    Graph graph;
+    private final Graph graph;
     public HashMap<String, Double> centralizationDegreeComponents;
 
     public Centrality(Graph graph) {
@@ -48,7 +47,6 @@ public class Centrality {
 
         return degree;
     }
-
     public ArrayList<ArrayList<Node>> closenessCentrality() {
 
         ArrayList<ArrayList<Node>> closeness = new ArrayList<>();
@@ -83,20 +81,26 @@ public class Centrality {
                 centralityValue.add(new Node(source, CValue));
             }
 
-            ArrayList<Node> results = new ArrayList<>();
             Collections.sort(centralityValue);
-            Iterator<Node> it = centralityValue.iterator();
+            closeness.add(centralityValue);
 
-            while (it.hasNext() && results.size() < 5) {
-                results.add(it.next());
-            }
-
-            closeness.add(results);
         }
         return closeness;
 
     }
-
+    public ArrayList<ArrayList<Node>> top10ClosenessCentrality() {
+        ArrayList<ArrayList<Node>> closeness = closenessCentrality();
+        ArrayList<ArrayList<Node>> top10 = new ArrayList<>();
+        for (ArrayList<Node> component : closeness) {
+            ArrayList<Node> top10Component = new ArrayList<>();
+            Iterator<Node> it = component.iterator();
+            while (it.hasNext() && top10Component.size() < 10) {
+                top10Component.add(it.next());
+            }
+            top10.add(top10Component);
+        }
+        return top10;
+    }
     public ArrayList<ArrayList<Node>> betweennessCentrality() {
         ArrayList<ArrayList<Node>> betweenness = new ArrayList<>();
 
@@ -169,24 +173,35 @@ public class Centrality {
                     }
                 }
             }
-            // stores the centrality value for each node as a Node object
+
+
             ArrayList<Node> centralityValue = new ArrayList<>();
             for (Vertex node : centrality.keySet()) {
                 centralityValue.add(new Node(node, centrality.get(node)));
             }
-            // sorts the nodes according to its closeness centrality
-            ArrayList<Node> results = new ArrayList<>();
             Collections.sort(centralityValue, Collections.reverseOrder());
-            Iterator<Node> it = centralityValue.iterator();
-            while (it.hasNext() && results.size() < 5) {
-                results.add(it.next());
-            }
-            betweenness.add(results);
+
+            betweenness.add(centralityValue);
         }
 
         return betweenness;
     }
+    public ArrayList<ArrayList<Node>> top10BetweennessCentrality() {
 
+        ArrayList<ArrayList<Node>> betweenness = betweennessCentrality();
+        ArrayList<ArrayList<Node>> top10 = new ArrayList<>();
+
+        for (ArrayList<Node> component : betweenness) {
+            ArrayList<Node> results = new ArrayList<>();
+            Iterator<Node> it = component.iterator();
+            while (it.hasNext() && results.size() < 10) {
+                results.add(it.next());
+            }
+            top10.add(results);
+        }
+
+        return top10;
+    }
     public ArrayList<ArrayList<Node>> katzCentrality(double alpha) {
 
         ArrayList<ArrayList<Node>> katz = new ArrayList<>();
@@ -219,16 +234,26 @@ public class Centrality {
                 }
                 centralityValue.add(new Node(source, centrality));
             }
-            // sorts the nodes according to its closeness centrality
-            ArrayList<Node> results = new ArrayList<>();
+
             Collections.sort(centralityValue, Collections.reverseOrder());
-            Iterator<Node> it = centralityValue.iterator();
-            while (it.hasNext() && results.size() < 5) {
-                results.add(it.next());
-            }
-            katz.add(results);
+            katz.add(centralityValue);
         }
         return katz;
     }
 
+    public ArrayList<ArrayList<Node>> top10KatzCentrality(double alpha) {
+        ArrayList<ArrayList<Node>> katz = katzCentrality(alpha);
+        ArrayList<ArrayList<Node>> top10 = new ArrayList<>();
+
+        for (ArrayList<Node> component : katz) {
+            ArrayList<Node> results = new ArrayList<>();
+            Iterator<Node> it = component.iterator();
+            while (it.hasNext() && results.size() < 10) {
+                results.add(it.next());
+            }
+            top10.add(results);
+        }
+
+        return top10;
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.Linkedin.Model;
 
+import com.example.Linkedin.File.UserUtil;
+
 import java.util.*;
 
 public class Graph {
@@ -70,7 +72,7 @@ public class Graph {
         return componentSet.contains(v);
     }
 
-    public Vertex insertVertex(User element) {
+    public Vertex insertVertex(UserUtil element) {
         Vertex v = new Vertex(element);
         vertices.add(v);
         return v;

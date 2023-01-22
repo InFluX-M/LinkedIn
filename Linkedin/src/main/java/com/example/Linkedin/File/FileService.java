@@ -1,14 +1,22 @@
 package com.example.Linkedin.File;
 
 import com.example.Linkedin.Exception.UserNotFoundException;
+import com.example.Linkedin.Model.Graph;
 import com.example.Linkedin.Model.User;
+import com.example.Linkedin.Model.Vertex;
 import com.example.Linkedin.Model.response.UserResponse;
 import com.example.Linkedin.Repository.UserRepository;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -71,6 +79,35 @@ public class FileService {
         }
 
         return userRepository.saveAll(usersMap.values()).stream().map(User::toUserResponse).collect(Collectors.toList());
+    }
+
+    public Graph createGraph() {
+        ArrayList<UserUtil> list;
+        try {
+            String jsonArray = Files.readString(Path.of("/media/influx/Programming/Projects/project-final-random/Linkedin/src/main/resources/users.json"));
+            System.out.println(jsonArray);
+            ObjectMapper objectMapper = new ObjectMapper();
+            list = objectMapper.readValue(jsonArray, new TypeReference<>() {
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Graph graph = new Graph();
+
+
+        for(UserUtil user : list){
+            graph.insertVertex(user);
+        }
+
+        for(Vertex vertex : graph.vertices()) {
+            for(String connectionID : vertex.getElement().getConnectionId())
+            {
+                graph.insertEdge(vertex, graph.getVertex(connectionID), vertex.getElement().getId() + "-" + connectionID);
+            }
+        }
+
+        return graph;
     }
 
 }
