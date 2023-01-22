@@ -11,15 +11,22 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class UserService {
 
+    public static User loggedInUser;
+
     private final UserRepository userRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public Set<User> getConnections(String username) {
+        return userRepository.findByUsername(username).getConnections();
     }
 
     public User getUserByUsername(String username) {
