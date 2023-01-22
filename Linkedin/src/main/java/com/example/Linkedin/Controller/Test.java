@@ -85,9 +85,9 @@ public class Test {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/c2/{id}")
-    public ResponseEntity<List<UserResponse>> readUsers(@PathVariable String id) {
-        return new ResponseEntity<>(suggestionService.getSuggestions(id).stream().map(User::toUserResponse).toList(), HttpStatus.OK);
+    @GetMapping("/c2/{id}/{impacts}")
+    public ResponseEntity<List<UserResponse>> readUsers(@PathVariable String id, @PathVariable String impacts) {
+        return new ResponseEntity<>(suggestionService.getSuggestions(id, impacts).stream().map(User::toUserResponse).toList(), HttpStatus.OK);
     }
 
 }

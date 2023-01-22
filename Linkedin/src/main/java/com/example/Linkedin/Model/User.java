@@ -39,7 +39,7 @@ public class User {
     private Set<User> requests;
 
     public UserResponse toUserResponse() {
-        return new UserResponse(username, email, password);
+        return new UserResponse(id, name, field, workplace, universityLocation, specialities);
     }
 
 //    public ProfileResponse toProfileResponse() {

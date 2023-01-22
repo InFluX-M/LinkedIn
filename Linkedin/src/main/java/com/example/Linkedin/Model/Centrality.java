@@ -7,6 +7,11 @@ public class Centrality {
     private final Graph graph;
     public HashMap<String, Double> centralizationDegreeComponents;
 
+    public ArrayList<ArrayList<Node>> degreeScores;
+    public ArrayList<ArrayList<Node>> betweennessScores;
+    public ArrayList<ArrayList<Node>> closenessScores;
+    public ArrayList<ArrayList<Node>> katzScores;
+
     public Centrality(Graph graph) {
         this.graph = graph;
         graph.identifyComponentsDFS();
@@ -44,7 +49,7 @@ public class Centrality {
             centralizationDegreeComponents.put(componentKey, cDegree);
             degree.add(results);
         }
-
+        degreeScores = degree;
         return degree;
     }
     public ArrayList<ArrayList<Node>> closenessCentrality() {
@@ -85,13 +90,13 @@ public class Centrality {
             closeness.add(centralityValue);
 
         }
+        closenessScores = closeness;
         return closeness;
 
     }
     public ArrayList<ArrayList<Node>> top10ClosenessCentrality() {
-        ArrayList<ArrayList<Node>> closeness = closenessCentrality();
         ArrayList<ArrayList<Node>> top10 = new ArrayList<>();
-        for (ArrayList<Node> component : closeness) {
+        for (ArrayList<Node> component : closenessScores) {
             ArrayList<Node> top10Component = new ArrayList<>();
             Iterator<Node> it = component.iterator();
             while (it.hasNext() && top10Component.size() < 10) {
@@ -184,14 +189,14 @@ public class Centrality {
             betweenness.add(centralityValue);
         }
 
+        betweennessScores = betweenness;
         return betweenness;
     }
     public ArrayList<ArrayList<Node>> top10BetweennessCentrality() {
 
-        ArrayList<ArrayList<Node>> betweenness = betweennessCentrality();
         ArrayList<ArrayList<Node>> top10 = new ArrayList<>();
 
-        for (ArrayList<Node> component : betweenness) {
+        for (ArrayList<Node> component : betweennessScores) {
             ArrayList<Node> results = new ArrayList<>();
             Iterator<Node> it = component.iterator();
             while (it.hasNext() && results.size() < 10) {
@@ -238,14 +243,15 @@ public class Centrality {
             Collections.sort(centralityValue, Collections.reverseOrder());
             katz.add(centralityValue);
         }
+
+        katzScores = katz;
         return katz;
     }
 
     public ArrayList<ArrayList<Node>> top10KatzCentrality(double alpha) {
-        ArrayList<ArrayList<Node>> katz = katzCentrality(alpha);
         ArrayList<ArrayList<Node>> top10 = new ArrayList<>();
 
-        for (ArrayList<Node> component : katz) {
+        for (ArrayList<Node> component : katzScores) {
             ArrayList<Node> results = new ArrayList<>();
             Iterator<Node> it = component.iterator();
             while (it.hasNext() && results.size() < 10) {

@@ -85,7 +85,6 @@ public class FileService {
         ArrayList<UserUtil> list;
         try {
             String jsonArray = Files.readString(Path.of("/media/influx/Programming/Projects/project-final-random/Linkedin/src/main/resources/users.json"));
-            System.out.println(jsonArray);
             ObjectMapper objectMapper = new ObjectMapper();
             list = objectMapper.readValue(jsonArray, new TypeReference<>() {
             });
