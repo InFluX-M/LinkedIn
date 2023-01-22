@@ -18,7 +18,6 @@ public class SuggestionService {
     private final UserService userService;
     private final UserRepository userRepository;
 
-
     public Graph createGraph() {
         Graph graph;
         graph = fileService.createGraph();
@@ -26,7 +25,7 @@ public class SuggestionService {
         return graph;
     }
 
-    public double getKatzCentralityScore(String id, ArrayList<ArrayList<Node>> katz) {
+    private double getKatzCentralityScore(String id, ArrayList<ArrayList<Node>> katz) {
         for (ArrayList<Node> nodes : katz) {
             for (Node node : nodes) {
                 if (node.vertex.getElement().getId().equals(id)) {
@@ -38,7 +37,7 @@ public class SuggestionService {
         return 0;
     }
 
-    public double getBetweennessCentralityScore(String id, ArrayList<ArrayList<Node>> betweenness) {
+    private double getBetweennessCentralityScore(String id, ArrayList<ArrayList<Node>> betweenness) {
         for (ArrayList<Node> nodes : betweenness) {
             for (Node node : nodes) {
                 if (node.vertex.getElement().getId().equals(id)) {
@@ -50,7 +49,7 @@ public class SuggestionService {
         return 0;
     }
 
-    public double getClosenessCentralityScore(String id, ArrayList<ArrayList<Node>> closeness) {
+    private double getClosenessCentralityScore(String id, ArrayList<ArrayList<Node>> closeness) {
         for (ArrayList<Node> nodes : closeness) {
             for (Node node : nodes) {
                 if (node.vertex.getElement().getId().equals(id)) {
@@ -62,7 +61,7 @@ public class SuggestionService {
         return 0;
     }
 
-    public double getScoreConnection(List<List<Vertex>> levels, Set<String> impact, User user, Set<Vertex> component, String idConnection, Graph graph, ArrayList<ArrayList<Node>> katz, ArrayList<ArrayList<Node>> betweenness, ArrayList<ArrayList<Node>> closeness) {
+    private double getScoreConnection(List<List<Vertex>> levels, Set<String> impact, User user, Set<Vertex> component, String idConnection, Graph graph, ArrayList<ArrayList<Node>> katz, ArrayList<ArrayList<Node>> betweenness, ArrayList<ArrayList<Node>> closeness) {
         User connection = userService.checkUserId(idConnection);
 
         UserProfile userProfile = UserProfile.builder()
@@ -161,6 +160,7 @@ public class SuggestionService {
     }
 
     public List<User> getSuggestions(String idUser, String impact) {
+
         Graph graph = createGraph();
         User user = userService.checkUserId(idUser);
         Set<Vertex> component = graph.BFS(graph.getVertex(idUser));

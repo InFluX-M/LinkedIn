@@ -3,7 +3,6 @@ package com.example.Linkedin.Service;
 import com.example.Linkedin.Model.User;
 import com.example.Linkedin.Model.response.UserResponse;
 import lombok.AllArgsConstructor;
-import org.apache.http.client.HttpClient;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -13,7 +12,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -30,7 +28,7 @@ public class MLService {
         return usersList;
     }
 
-    public List<List<User>> getClusters(String type) throws Exception {
+    public List<List<User>> getClusters(String type) {
         ArrayList<ArrayList<String>> clusters = getDataClustering(type);
         List<List<User>> users = new ArrayList<>();
         for (ArrayList<String> cluster : clusters) {
@@ -74,34 +72,40 @@ public class MLService {
         return anomalies;
     }
 
-    public ArrayList<ArrayList<String>> getDataClustering(String type) throws Exception {
+    public ArrayList<ArrayList<String>> getDataClustering(String type) {
 
         String urlToRead = "http://127.0.0.1:8000/api/clustering_" + type;
         StringBuilder result = new StringBuilder();
-        URL url = new URL(urlToRead);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(conn.getInputStream()))) {
-            for (String line; (line = reader.readLine()) != null; ) {
-                result.append(line);
+
+        try {
+            URL url = new URL(urlToRead);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream()))) {
+                for (String line; (line = reader.readLine()) != null; ) {
+                    result.append(line);
+                }
             }
+
+            String aim = result.toString();
+            ArrayList<ArrayList<String>> clusters = new ArrayList<>();
+
+            for (String c : aim.split("[\\[\\]]")) {
+                if (c.isEmpty()) {
+                    continue;
+                }
+                ArrayList<String> cluster = new ArrayList<>(Arrays.asList(c.split(", ")));
+                if (cluster.size() > 1) {
+                    clusters.add(cluster);
+                }
+            }
+
+            return clusters;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        String aim = result.toString();
-        ArrayList<ArrayList<String>> clusters = new ArrayList<>();
-
-        for (String c : aim.split("[\\[\\]]")) {
-            if (c.isEmpty()) {
-                continue;
-            }
-            ArrayList<String> cluster = new ArrayList<>(Arrays.asList(c.split(", ")));
-            if (cluster.size() > 1) {
-                clusters.add(cluster);
-            }
-        }
-
-        return clusters;
     }
 
     public List<User> getRecommendations(String id, String type) throws Exception {
@@ -114,5 +118,4 @@ public class MLService {
         }
         return null;
     }
-
 }
