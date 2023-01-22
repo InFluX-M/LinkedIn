@@ -111,9 +111,15 @@ public class MLService {
     public List<User> getRecommendations(String id, String type) throws Exception {
         List<List<User>> users = getClusters(type);
         User user = userService.checkUserId(id);
+        List<User> recommendations = new ArrayList<>();
         for (List<User> cluster : users) {
             if (cluster.contains(user)) {
-               return cluster;
+                for (User u : cluster) {
+                    if (!u.getId().equals(user.getId()) && !user.getConnections().contains(u)) {
+                        recommendations.add(u);
+                    }
+                }
+                return recommendations;
             }
         }
         return null;
