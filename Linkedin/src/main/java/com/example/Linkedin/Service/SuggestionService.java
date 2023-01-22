@@ -3,6 +3,7 @@ package com.example.Linkedin.Service;
 import com.example.Linkedin.File.FileService;
 import com.example.Linkedin.File.UserUtil;
 import com.example.Linkedin.Model.*;
+import com.example.Linkedin.Model.response.UserProfile;
 import com.example.Linkedin.Model.response.UserResponse;
 import com.example.Linkedin.Repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -64,26 +65,28 @@ public class SuggestionService {
     public double getScoreConnection(List<List<Vertex>> levels, Set<String> impact, User user, Set<Vertex> component, String idConnection, Graph graph, ArrayList<ArrayList<Node>> katz, ArrayList<ArrayList<Node>> betweenness, ArrayList<ArrayList<Node>> closeness) {
         User connection = userService.checkUserId(idConnection);
 
-        UserUtil userUtil = UserUtil.builder()
+        UserProfile userProfile = UserProfile.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .field(user.getField())
-                .dateOfBirth(user.getDateOfBirth().toString())
+                .dateOfBirth(user.getDateOfBirth())
                 .email(user.getEmail())
                 .workplace(user.getWorkplace())
-                .specialties(user.getSpecialities())
+                .specialities(user.getSpecialities())
                 .universityLocation(user.getUniversityLocation())
-                .profile_pic(user.getProfile_url())
+                .profile_url(user.getProfile_url())
                 .build();
 
-        UserUtil connectionUtil = UserUtil.builder()
+        UserProfile connectionProfile = UserProfile.builder()
+                .id(connection.getId())
                 .name(connection.getName())
                 .field(connection.getField())
-                .dateOfBirth(connection.getDateOfBirth().toString())
+                .dateOfBirth(connection.getDateOfBirth())
                 .email(connection.getEmail())
                 .workplace(connection.getWorkplace())
-                .specialties(connection.getSpecialities())
+                .specialities(connection.getSpecialities())
                 .universityLocation(connection.getUniversityLocation())
-                .profile_pic(connection.getProfile_url())
+                .profile_url(connection.getProfile_url())
                 .build();
 
 
@@ -125,24 +128,24 @@ public class SuggestionService {
         }
 
         if(impact.contains("Field"))
-            score += (userUtil.getField().equals(connectionUtil.getField()) ? 150.0 : 0);
+            score += (userProfile.getField().equals(connectionProfile.getField()) ? 150.0 : 0);
         else
-            score += (userUtil.getField().equals(connectionUtil.getField()) ? 100.0 : 0);
+            score += (userProfile.getField().equals(connectionProfile.getField()) ? 100.0 : 0);
 
 
         if(impact.contains("Workplace"))
-            score += (userUtil.getWorkplace().equals(connectionUtil.getWorkplace()) ? 250.0 : 0);
+            score += (userProfile.getWorkplace().equals(connectionProfile.getWorkplace()) ? 250.0 : 0);
         else
-            score += (userUtil.getWorkplace().equals(connectionUtil.getWorkplace()) ? 150.0 : 0);
+            score += (userProfile.getWorkplace().equals(connectionProfile.getWorkplace()) ? 150.0 : 0);
 
         if(impact.contains("University"))
-            score += (userUtil.getUniversityLocation().equals(connectionUtil.getUniversityLocation()) ? 250.0 : 0);
+            score += (userProfile.getUniversityLocation().equals(connectionProfile.getUniversityLocation()) ? 250.0 : 0);
         else
-            score += (userUtil.getUniversityLocation().equals(connectionUtil.getUniversityLocation()) ? 150.0 : 0);
+            score += (userProfile.getUniversityLocation().equals(connectionProfile.getUniversityLocation()) ? 150.0 : 0);
 
         int commonSpecialities = 0;
-        for (String speciality : userUtil.getSpecialties()) {
-            if (connectionUtil.getSpecialties().contains(speciality)) {
+        for (String speciality : userProfile.getSpecialities()) {
+            if (connectionProfile.getSpecialities().contains(speciality)) {
                 commonSpecialities++;
             }
         }
@@ -151,7 +154,7 @@ public class SuggestionService {
             score += (commonSpecialities*100);
         }
         else {
-            score += (commonSpecialities*50);
+            score += (commonSpecialities*30);
         }
 
         return score;

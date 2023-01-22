@@ -1,6 +1,7 @@
 package com.example.Linkedin.Model;
 
 //import com.example.Linkedin.Model.response.ProfileResponse;
+import com.example.Linkedin.Model.response.UserProfile;
 import com.example.Linkedin.Model.response.UserResponse;
 import lombok.*;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -42,8 +44,9 @@ public class User {
         return new UserResponse(id, name, field, workplace, universityLocation, specialities);
     }
 
-//    public ProfileResponse toProfileResponse() {
-//        return new ProfileResponse(name, username, email, field, workplace, universityLocation, dateOfBirth, profile_url, specialities);
-//    }
+    public UserProfile toProfileResponse() {
+        Set<String> connectionId = connections.stream().map(User::getId).collect(Collectors.toSet());
+        return new UserProfile(id, name, username, email, field, workplace, universityLocation, dateOfBirth, profile_url, specialities, connectionId);
+    }
 
 }

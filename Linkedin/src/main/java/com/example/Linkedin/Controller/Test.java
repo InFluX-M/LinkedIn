@@ -2,6 +2,7 @@ package com.example.Linkedin.Controller;
 
 import com.example.Linkedin.Model.User;
 import com.example.Linkedin.Model.request.UserLogin;
+import com.example.Linkedin.Model.response.UserProfile;
 import com.example.Linkedin.Model.response.UserResponse;
 import com.example.Linkedin.Service.SuggestionService;
 import com.example.Linkedin.Service.UserService;
@@ -86,8 +87,8 @@ public class Test {
     }
 
     @GetMapping("/c2/{id}/{impacts}")
-    public ResponseEntity<List<UserResponse>> readUsers(@PathVariable String id, @PathVariable String impacts) {
-        return new ResponseEntity<>(suggestionService.getSuggestions(id, impacts).stream().map(User::toUserResponse).toList(), HttpStatus.OK);
+    public ResponseEntity<List<UserProfile>> readUsers(@PathVariable String id, @PathVariable String impacts) {
+        return new ResponseEntity<>(suggestionService.getSuggestions(id, impacts).stream().map(User::toProfileResponse).toList(), HttpStatus.OK);
     }
 
 }
