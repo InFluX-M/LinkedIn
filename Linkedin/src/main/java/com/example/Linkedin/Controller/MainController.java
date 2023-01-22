@@ -26,18 +26,26 @@ public class MainController {
 
     @GetMapping("/landing")
     public String landingPage(Model model) {
-        model.addAttribute("user", userService.getAllUsers().get(0));
+
         List<User> influential = new ArrayList<>();
+        List<User> temp;
         for (int i = 0; i < 4; i++) {
             influential.add(userService.getAllUsers().get(i));
         }
         model.addAttribute("influential", influential);
+
         List<User> important = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             important.add(userService.getAllUsers().get(i));
         }
         model.addAttribute("important", important);
+
         return "landing";
+    }
+
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";
     }
 
     @PostMapping("/login")

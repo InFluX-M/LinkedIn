@@ -3,7 +3,6 @@ package com.example.Linkedin.Controller;
 import com.example.Linkedin.Model.User;
 import com.example.Linkedin.Model.request.UserLogin;
 import com.example.Linkedin.Model.response.UserProfile;
-import com.example.Linkedin.Model.response.UserResponse;
 import com.example.Linkedin.Service.SuggestionService;
 import com.example.Linkedin.Service.UserService;
 import lombok.AllArgsConstructor;
@@ -12,28 +11,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @AllArgsConstructor
 public class Test {
 
-    @GetMapping("/login")
-    public String listStudents(Model model) {
-        List<UserLogin> students = List.of(
-                new UserLogin("John", "em1"),
-                new UserLogin("Mary", "em2"),
-                new UserLogin("Peter", "em3"),
-                new UserLogin("Kate", "em4"),
-                new UserLogin("Bob", "em5")
-        );
-        model.addAttribute("users", students);
-        return "login";
+    UserService userService;
+
+    @GetMapping("/test")
+    public String testPage(Model model) {
+        model.addAttribute("user", userService.getAllUsers().get(1));
+        return "user-profile";
     }
 
     @GetMapping("/users/connections")

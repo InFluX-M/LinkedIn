@@ -21,9 +21,13 @@
         </button>
         <div class="navlinkwrap">
             <span class="navlink selectedlink">Home</span>
-            <span class="navlink">My Profile</span>
+            <span class="navlink"
+                  th:onclick="|window.location.href='@{login}'|"
+                  style="cursor: pointer;">My Profile</span>
             <span class="navlink">Activity</span>
-            <span class="navlink">How It Works</span>
+            <span class="navlink"
+                  th:onclick="|window.location.href='@{users/all}'|"
+                  style="cursor: pointer;">Our Users</span>
         </div>
         <div class="buttonwrap">
             <button class="createbtn selectedbtn" th:onclick="|window.location.href='@{login}'|">SIGN UP</button>
@@ -77,15 +81,15 @@
             <p class="titleslim">View all</p>
         </div>
         <div class="nft">
-            <div class=item th:each="user: ${influential}">
+            <div class=item th:each="us: ${influential}">
                 <img class="item-img"
-                     th:src="${user.profile_url}"
-                     th:alt="${user.name}" border="0">
+                     th:src="${us.profile_url}"
+                     th:alt="${us.name}" border="0">
                 <div class="item-title">
-                    <p th:text="${user.name}"></p>
-                    <p th:text="${user.specialities.get(0)}"></p>
+                    <p th:text="${us.name}"></p>
+                    <p th:text="${us.specialities.get(0)}"></p>
                 </div>
-                <p class="item-date" th:text="${user.workplace}"></p>
+                <p class="item-date" th:text="${us.workplace}"></p>
             </div>
         </div>
     </div>
@@ -174,15 +178,15 @@
             </div>
         </div>
         <div class="discover-items">
-            <div class=item th:each="user: ${important}">
+            <div class=item th:each="u: ${important}">
                 <img class="item-img"
-                     th:src="${user.profile_url}"
-                     alt="user" border="0">
+                     th:src="${u.profile_url}"
+                     alt="u" border="0">
                 <div class="item-title">
-                    <p th:text="${user.name}"></p>
-                    <p th:text="${user.getSpecialities().get(0)}"></p>
+                    <p th:text="${u.name}"></p>
+                    <p th:text="${u.getSpecialities().get(0)}"></p>
                 </div>
-                <p class="item-date" th:text="${user.workplace}"></p>
+                <p class="item-date" th:text="${u.workplace}"></p>
             </div>
         </div>
         <button class="discover-loadbtn" th:onclick="|window.location.href='@{connections}'|">LOAD MORE</button>
