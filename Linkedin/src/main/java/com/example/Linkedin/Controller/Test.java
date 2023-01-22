@@ -16,34 +16,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @AllArgsConstructor
 public class Test {
-
-    @GetMapping("/")
-    public String firstPage() {
-        return "first";
-    }
-
-    @PostMapping("/login")
-    public String login(@ModelAttribute(name = "loginForm") UserLogin userLogin, Model model) {
-
-        String username = userLogin.getUsername();
-        String pass = userLogin.getPassword();
-
-        if (username.equals("Admin") && pass.equals("Admin@123")) {
-            model.addAttribute("uname", username);
-            model.addAttribute("pass", pass);
-            System.out.println("UserLogin Success\nUsername: " + username + "\nPassword: " + pass);
-            return "first";
-        }
-
-        // if userLogin failed
-        model.addAttribute("error", "Incorrect Username & Password");
-        return "login";
-    }
 
     @GetMapping("/login")
     public String listStudents(Model model) {
@@ -80,6 +58,7 @@ public class Test {
     }
 
     SuggestionService suggestionService;
+
     @GetMapping("/c")
     public ResponseEntity<Void> readUsers() {
         suggestionService.createGraph();

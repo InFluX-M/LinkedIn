@@ -26,11 +26,11 @@ public class UserService {
     }
 
     public Set<User> getConnections(String username) {
-        return userRepository.findByUsername(username).getConnections();
+        return userRepository.findByUsername(username).get(0).getConnections();
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).get(0);
     }
 
     public UserResponse getUserByEmail(String email) {
