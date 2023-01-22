@@ -26,14 +26,15 @@ public class UserController {
 
     @GetMapping("/feed")
     public String profilePage(Model model) {
-        //todo
-        model.addAttribute("connectionList", userService.getAllUsers());
+        User login = UserService.loggedInUser;
+        model.addAttribute("connectionList", userService.getConnections(login.getUsername()));
         List<User> list = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             list.add(userService.getAllUsers().get(i));
         }
+        System.err.println(login.getProfile_url());
         model.addAttribute("suggestionList", list);
-        model.addAttribute("login", userService.getAllUsers().get(0));
+        model.addAttribute("login", login);
         model.addAttribute("influentialList", list);
         return "feed";
     }
