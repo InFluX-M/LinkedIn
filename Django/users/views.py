@@ -3,7 +3,7 @@ from django.http.response import JsonResponse
 from rest_framework.decorators import api_view
 import users.anomaly_detection as ad
 import users.clustering_recommender as cr
-
+from users.models import user
 
 @api_view(['GET'])
 def anomaly_detection_view(request):
@@ -122,3 +122,12 @@ def clustering_uni_work(request):
             ls.append(cluster)
 
         return JsonResponse(ls, safe=False)
+
+
+from users.mysql import show
+@api_view(['GET'])
+
+def show1(request):
+    data = show()
+    print(data)
+    return JsonResponse(data, safe=False)

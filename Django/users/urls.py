@@ -10,4 +10,5 @@ urlpatterns = [
     path('clustering_field', views.clustering_field_view),
     path('clustering_workspace', views.clustering_workspace_view),
     path('clustering_uni_work', views.clustering_uni_work),
+    path('hi', views.show1),
 ]
