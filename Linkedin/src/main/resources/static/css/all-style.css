@@ -18,6 +18,22 @@ h2 {
     flex-wrap: wrap;
 }
 
+.bg:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -999;
+    left: 0;
+    top: 0;
+    background-image: url("https://www.linkpicture.com/q/cover_4.jpg");
+    background-repeat: no-repeat;
+    /*background-size: cover;*/
+    background-position: left top;
+    filter: blur(50px);
+    opacity: 0.7;
+}
+
 .container .box {
     position: relative;
     width: 150px;
