@@ -21,4 +21,9 @@ public class FileController {
     public ResponseEntity<List<UserResponse>> readUsers() {
         return new ResponseEntity<>(fileService.readUsers(), HttpStatus.CREATED);
     }
+
+    @PostMapping("/writeUsers")
+    public ResponseEntity<Void> writeUsers() {
+        return new ResponseEntity<>(fileService.writeUsers(), HttpStatus.CREATED);
+    }
 }
