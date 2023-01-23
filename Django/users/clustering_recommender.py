@@ -25,7 +25,6 @@ def preprocessing():
         i += 1
 
     df_train = df_train.drop(['specialties', 'id'], axis=1)
-
     X = df_train.values
 
     return X, df
@@ -60,6 +59,7 @@ def clustering_sklearn(X, df):
 Implement K-Means Clustering Algorithm from scratch
 """
 
+
 def find_closest_centroids(X, centroids):
     K = centroids.shape[0]
     idx = np.zeros(X.shape[0], dtype=int)
@@ -73,6 +73,7 @@ def find_closest_centroids(X, centroids):
 
     return idx
 
+
 def compute_centroids(X, idx, K):
     m, n = X.shape
 
@@ -84,12 +85,14 @@ def compute_centroids(X, idx, K):
 
     return centroids
 
+
 def cost_function(X, centroids, idx):
     m = X.shape[0]
     cost = 0
     for i in range(m):
         cost += pow(np.linalg.norm(X[i] - centroids[idx[i]]), 2)
     return 1 / m * cost
+
 
 def run_kMeans(X, K):
     m, n = X.shape
@@ -113,10 +116,12 @@ def run_kMeans(X, K):
 
         i += 1
 
+
 def kMeans_init_centroids(X, K):
-    randidx = np.random.permutation(X.shape[0])
-    centroids = X[randidx[:K]]
+    rand_idx = np.random.permutation(X.shape[0])
+    centroids = X[rand_idx[:K]]
     return centroids
+
 
 def clustering_scratch(X, df):
     K = 80
@@ -148,7 +153,7 @@ def find_closest_centroids(X, centroids):
         for j in range(K):
             norm_ij = np.linalg.norm(X[i] - centroids[j])
             for k in range(4, 17):
-                norm_ij += 2 * abs(X[i][k] - centroids[j][k])
+                norm_ij += abs(X[i][k] - centroids[j][k])
 
             distance.append(norm_ij)
         idx[i] = np.argmin(distance)
@@ -188,6 +193,7 @@ def clustering_university(X, df):
 Implement K-Means Clustering Algorithm By increasing the impact of the University 
 """
 
+
 def find_closest_centroids(X, centroids):
     K = centroids.shape[0]
     idx = np.zeros(X.shape[0], dtype=int)
@@ -204,6 +210,7 @@ def find_closest_centroids(X, centroids):
 
     return idx
 
+
 def cost_function(X, centroids, idx):
     m = X.shape[0]
     cost = 0
@@ -214,7 +221,6 @@ def cost_function(X, centroids, idx):
         cost += pow(norm_ij, 2)
 
     return 1 / m * cost
-
 
 
 def clustering_workspace(X, df):
@@ -236,6 +242,7 @@ def clustering_workspace(X, df):
 """
 Implement K-Means Clustering Algorithm By increasing the impact of the specialties 
 """
+
 
 def find_closest_centroids(X, centroids):
     K = centroids.shape[0]
@@ -265,8 +272,8 @@ def cost_function(X, centroids, idx):
 
     return 1 / m * cost
 
-def clustering_specialties(X, df):
 
+def clustering_specialties(X, df):
     K = 40
     centroids, y_kmeans, min_cost = run_kMeans(X, K)
 
@@ -285,6 +292,7 @@ def clustering_specialties(X, df):
 """
 Implement K-Means Clustering Algorithm By increasing the impact of the fields 
 """
+
 
 def find_closest_centroids(X, centroids):
     K = centroids.shape[0]
@@ -335,6 +343,7 @@ def clustering_field(X, df):
 Implement K-Means Clustering Algorithm By increasing the impact of the workplace & University
 """
 
+
 def find_closest_centroids(X, centroids):
     K = centroids.shape[0]
     idx = np.zeros(X.shape[0], dtype=int)
@@ -365,7 +374,6 @@ def cost_function(X, centroids, idx):
 
 
 def clustering_uni_work(X, df):
-
     K = 70
     centroids, y_kmeans, min_cost = run_kMeans(X, K)
 
@@ -377,6 +385,5 @@ def clustering_uni_work(X, df):
             clusters_uni_work[cluster_x_i] = list()
         clusters_uni_work[cluster_x_i].append(idx)
         idx += 1
-
 
     return clusters_uni_work
